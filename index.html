@@ -1,0 +1,29 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rank Display</title>
+</head>
+<body style="text-align:center; font-family:sans-serif;">
+
+  <h2>Rank 1</h2>
+  <img id="rank1-img" width="150"><br>
+  <p id="rank1-name">Loading...</p>
+
+  <script>
+    // CHANGE THIS LINK LATER
+    fetch("https://your-api-link.com/data")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("rank1-name").innerText = data.rank1.name;
+        document.getElementById("rank1-img").src =
+          "https://crafatar.com/avatars/" + data.rank1.uuid;
+      })
+      .catch(() => {
+        document.getElementById("rank1-name").innerText = "Failed to load";
+      });
+  </script>
+
+</body>
+</html>
+```

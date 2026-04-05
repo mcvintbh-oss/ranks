@@ -76,8 +76,11 @@
     board.innerHTML = "";
     const data = snapshot.val() || {};
 
-    for (let i = 1; i <= 50; i++) {
-      const raw = data[i];
+    let players = [];
+
+    // 🔥 Convert data into array
+    for (let key in data) {
+      const raw = data[key];
 
       const name = typeof raw === "string"
         ? raw
@@ -85,38 +88,50 @@
 
       const points = raw?.points || 0;
 
-      const isEmpty = !raw;
-      const skinName = isEmpty ? "Mugm_" : name;
+      players.push({ name, points });
+    }
+
+    // 🔥 Sort by points (highest first)
+    players.sort((a, b) => b.points - a.points);
+
+    // 🔥 Fill up to 50 slots
+    while (players.length < 50) {
+      players.push({ name: "???", points: 0, empty: true });
+    }
+
+    // 🔥 Render
+    players.slice(0, 50).forEach((player, index) => {
+      const isEmpty = player.name === "???";
+      const skinName = isEmpty ? "Mugm_" : player.name;
 
       const row = document.createElement("div");
       row.className = "row";
 
-      if (i === 1) row.classList.add("top1");
-      if (i === 2) row.classList.add("top2");
-      if (i === 3) row.classList.add("top3");
+      if (index === 0) row.classList.add("top1");
+      if (index === 1) row.classList.add("top2");
+      if (index === 2) row.classList.add("top3");
 
       if (isEmpty) row.style.opacity = "0.5";
 
       const rank = document.createElement("div");
       rank.className = "rank";
-      rank.innerText = i;
+      rank.innerText = index + 1;
 
       const img = document.createElement("img");
       img.className = "avatar";
       img.src = "https://mc-heads.net/avatar/" + skinName + "/100";
 
-      // fallback if image fails
       img.onerror = () => {
         img.src = "https://mc-heads.net/avatar/Mugm_/100";
       };
 
       const nameDiv = document.createElement("div");
       nameDiv.className = "name";
-      nameDiv.innerText = name;
+      nameDiv.innerText = player.name;
 
       const pointsDiv = document.createElement("div");
       pointsDiv.className = "points";
-      pointsDiv.innerText = points;
+      pointsDiv.innerText = player.points;
 
       row.appendChild(rank);
       row.appendChild(img);
@@ -124,7 +139,7 @@
       row.appendChild(pointsDiv);
 
       board.appendChild(row);
-    }
+    });
   });
 </script>
 

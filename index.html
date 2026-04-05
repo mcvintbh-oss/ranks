@@ -77,8 +77,16 @@
     const data = snapshot.val() || {};
 
     for (let i = 1; i <= 50; i++) {
-      const name = data[i]?.name || "Empty";
-      const points = data[i]?.points || 0;
+      const raw = data[i];
+
+      const name = typeof raw === "string"
+        ? raw
+        : raw?.name || "???";
+
+      const points = raw?.points || 0;
+
+      const isEmpty = !raw;
+      const skinName = isEmpty ? "Mugm_" : name;
 
       const row = document.createElement("div");
       row.className = "row";
@@ -87,16 +95,15 @@
       if (i === 2) row.classList.add("top2");
       if (i === 3) row.classList.add("top3");
 
+      if (isEmpty) row.style.opacity = "0.5";
+
       const rank = document.createElement("div");
       rank.className = "rank";
       rank.innerText = i;
 
       const img = document.createElement("img");
       img.className = "avatar";
-
-      if (name !== "Empty") {
-        img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/face/100";
-      }
+      img.src = "https://skinmc.net/api/v1/renders/profiles/" + skinName + "/face/100";
 
       const nameDiv = document.createElement("div");
       nameDiv.className = "name";
@@ -118,4 +125,4 @@
 
 </body>
 </html>
-```
+

@@ -3,6 +3,7 @@
 <html>
 <head>
   <title>Top 50 Ranks</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -50,46 +51,60 @@
   <h1>🏆 Top 50 Players</h1>
   <div id="ranks"></div>
 
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
   <script>
+    // 🔴 PASTE YOUR FIREBASE CONFIG HERE
+    const firebaseConfig = {
+      apiKey: "PASTE_HERE",
+      authDomain: "PASTE_HERE",
+      databaseURL: "PASTE_HERE",
+      projectId: "PASTE_HERE",
+      storageBucket: "PASTE_HERE",
+      messagingSenderId: "PASTE_HERE",
+      appId: "PASTE_HERE"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
     const container = document.getElementById("ranks");
 
-    const players = [
-      "Steve",
-      "Alex",
-      "Herobrine"
-      // add more names here
-    ];
+    firebase.database().ref("ranks").on("value", snapshot => {
+      container.innerHTML = "";
+      const data = snapshot.val() || {};
 
-    for (let i = 0; i < 50; i++) {
-      const name = players[i] || "Empty";
+      for (let i = 1; i <= 50; i++) {
+        const name = data[i] || "Empty";
 
-      const card = document.createElement("div");
-      card.className = "card";
+        const card = document.createElement("div");
+        card.className = "card";
 
-      // highlight top 3
-      if (i === 0) card.classList.add("rank1");
-      if (i === 1) card.classList.add("rank2");
-      if (i === 2) card.classList.add("rank3");
+        if (i === 1) card.classList.add("rank1");
+        if (i === 2) card.classList.add("rank2");
+        if (i === 3) card.classList.add("rank3");
 
-      const title = document.createElement("h3");
-      title.innerText = "#" + (i + 1);
+        const title = document.createElement("h3");
+        title.innerText = "#" + i;
 
-      const img = document.createElement("img");
-      img.width = 100;
+        const img = document.createElement("img");
+        img.width = 100;
 
-      if (name !== "Empty") {
-        img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/armor-bust/500";
+        if (name !== "Empty") {
+          img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/armor-bust/500";
+        }
+
+        const text = document.createElement("p");
+        text.innerText = name;
+
+        card.appendChild(title);
+        card.appendChild(img);
+        card.appendChild(text);
+
+        container.appendChild(card);
       }
-
-      const text = document.createElement("p");
-      text.innerText = name;
-
-      card.appendChild(title);
-      card.appendChild(img);
-      card.appendChild(text);
-
-      container.appendChild(card);
-    }
+    });
   </script>
 
 </body>

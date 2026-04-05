@@ -1,32 +1,81 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ranks</title>
-</head>
-<body style="text-align:center; font-family:sans-serif;">
+  <title>Top 50 Ranks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
 
-  <h1>Top Ranks</h1>
+    h1 {
+      margin: 20px;
+    }
+
+    #ranks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .rank1 { border: 2px solid gold; }
+    .rank2 { border: 2px solid silver; }
+    .rank3 { border: 2px solid #cd7f32; }
+
+    img {
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🏆 Top 50 Players</h1>
   <div id="ranks"></div>
 
   <script>
     const container = document.getElementById("ranks");
 
-    // EDIT NAMES HERE
     const players = [
-      // add more names here (up to 50)
+      "Steve",
+      "Alex",
+      "Herobrine"
+      // add more names here
     ];
 
     for (let i = 0; i < 50; i++) {
       const name = players[i] || "Empty";
 
-      const rankDiv = document.createElement("div");
-      rankDiv.style.marginBottom = "20px";
+      const card = document.createElement("div");
+      card.className = "card";
+
+      // highlight top 3
+      if (i === 0) card.classList.add("rank1");
+      if (i === 1) card.classList.add("rank2");
+      if (i === 2) card.classList.add("rank3");
 
       const title = document.createElement("h3");
-      title.innerText = "Rank " + (i + 1);
+      title.innerText = "#" + (i + 1);
 
       const img = document.createElement("img");
-      img.width = 120;
+      img.width = 100;
 
       if (name !== "Empty") {
         img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/armor-bust/500";
@@ -35,11 +84,11 @@
       const text = document.createElement("p");
       text.innerText = name;
 
-      rankDiv.appendChild(title);
-      rankDiv.appendChild(img);
-      rankDiv.appendChild(text);
+      card.appendChild(title);
+      card.appendChild(img);
+      card.appendChild(text);
 
-      container.appendChild(rankDiv);
+      container.appendChild(card);
     }
   </script>
 

@@ -103,7 +103,12 @@
 
       const img = document.createElement("img");
       img.className = "avatar";
-      img.src = "https://skinmc.net/api/v1/renders/profiles/" + skinName + "/face/100";
+      img.src = "https://mc-heads.net/avatar/" + skinName + "/100";
+
+      // fallback if image fails
+      img.onerror = () => {
+        img.src = "https://mc-heads.net/avatar/Mugm_/100";
+      };
 
       const nameDiv = document.createElement("div");
       nameDiv.className = "name";
@@ -125,4 +130,3 @@
 
 </body>
 </html>
-

@@ -2,21 +2,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rank Display</title>
+  <title>Ranks</title>
 </head>
 <body style="text-align:center; font-family:sans-serif;">
 
-  <h2>Rank 1</h2>
-  <img id="rank1-img" width="150"><br>
-  <p id="rank1-name">Loading...</p>
+  <h1>Top Ranks</h1>
+  <div id="ranks"></div>
 
   <script>
-    const playerName = "Steve";
-    
-    document.getElementById("rank1-name").innerText = playerName; 
-    
-    document.getElementById("rank1-img").src =
-      "https://skinmc.net/api/v1/renders/profiles/" + playerName + "/armor-bust/500";
+    const container = document.getElementById("ranks");
+
+    // EDIT NAMES HERE
+    const players = [
+      "Steve",
+      "Alex",
+      "Herobrine"
+      // add more names here (up to 50)
+    ];
+
+    for (let i = 0; i < 50; i++) {
+      const name = players[i] || "Empty";
+
+      const rankDiv = document.createElement("div");
+      rankDiv.style.marginBottom = "20px";
+
+      const title = document.createElement("h3");
+      title.innerText = "Rank " + (i + 1);
+
+      const img = document.createElement("img");
+      img.width = 120;
+
+      if (name !== "Empty") {
+        img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/armor-bust/500";
+      }
+
+      const text = document.createElement("p");
+      text.innerText = name;
+
+      rankDiv.appendChild(title);
+      rankDiv.appendChild(img);
+      rankDiv.appendChild(text);
+
+      container.appendChild(rankDiv);
+    }
   </script>
 
 </body>

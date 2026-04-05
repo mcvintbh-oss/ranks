@@ -12,17 +12,7 @@
 
   <script>
     // CHANGE THIS LINK LATER
-    fetch("https://your-api-link.com/data")
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("rank1-name").innerText = data.rank1.name;
-        document.getElementById("rank1-img").src =
-          "https://crafatar.com/avatars/" + data.rank1.uuid;
-      })
-      .catch(() => {
-        document.getElementById("rank1-name").innerText = "Failed to load";
-      });
-  </script>
+    const data = { rank1: { name: "Vintbh", uuid: "bbd48127-7103-483b-a64a-ae158b361300" } }; document.getElementById("rank1-name").innerText = data.rank1.name; document.getElementById("rank1-img").src = "https://crafatar.com/avatars/" + data.rank1.uuid; </script>
 
 </body>
 </html>

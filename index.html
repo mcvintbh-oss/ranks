@@ -2,110 +2,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Top 50 Ranks</title>
+  <title>Leaderboard</title>
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
+      font-family: Arial;
+      background: #1a1a1a;
       color: white;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 20px;
-    }
-
-    #ranks {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
       padding: 20px;
     }
 
-    .card {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-      transition: transform 0.2s;
+    .row {
+      display: flex;
+      align-items: center;
+      background: #2a2a2a;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
     }
 
-    .card:hover {
-      transform: scale(1.05);
+    .rank {
+      font-size: 30px;
+      width: 50px;
+      text-align: center;
+      font-weight: bold;
     }
 
-    .rank1 { border: 2px solid gold; }
-    .rank2 { border: 2px solid silver; }
-    .rank3 { border: 2px solid #cd7f32; }
+    .top1 { background: #f59e0b; }
+    .top2 { background: #9ca3af; }
+    .top3 { background: #d97706; }
 
-    img {
+    .avatar {
+      width: 50px;
+      height: 50px;
+      margin: 0 15px;
       border-radius: 8px;
-      margin: 10px 0;
+    }
+
+    .name {
+      flex: 1;
+      font-size: 20px;
+    }
+
+    .points {
+      background: #3a3a3a;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 18px;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>🏆 Top 50 Players</h1>
-  <div id="ranks"></div>
+<h1>🏆 Leaderboard</h1>
+<div id="board"></div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-  <script>
-    // 🔴 PASTE YOUR FIREBASE CONFIG HERE
-    const firebaseConfig = {
-      apiKey: "PASTE_HERE",
-      authDomain: "PASTE_HERE",
-      databaseURL: "PASTE_HERE",
-      projectId: "PASTE_HERE",
-      storageBucket: "PASTE_HERE",
-      messagingSenderId: "PASTE_HERE",
-      appId: "PASTE_HERE"
-    };
+<script>
+  const firebaseConfig = {
+    apiKey: "PASTE_HERE",
+    authDomain: "PASTE_HERE",
+    databaseURL: "PASTE_HERE",
+    projectId: "PASTE_HERE"
+  };
 
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 
-    const container = document.getElementById("ranks");
+  const board = document.getElementById("board");
 
-    firebase.database().ref("ranks").on("value", snapshot => {
-      container.innerHTML = "";
-      const data = snapshot.val() || {};
+  firebase.database().ref("ranks").on("value", snapshot => {
+    board.innerHTML = "";
+    const data = snapshot.val() || {};
 
-      for (let i = 1; i <= 50; i++) {
-        const name = data[i] || "Empty";
+    for (let i = 1; i <= 50; i++) {
+      const name = data[i]?.name || "Empty";
+      const points = data[i]?.points || 0;
 
-        const card = document.createElement("div");
-        card.className = "card";
+      const row = document.createElement("div");
+      row.className = "row";
 
-        if (i === 1) card.classList.add("rank1");
-        if (i === 2) card.classList.add("rank2");
-        if (i === 3) card.classList.add("rank3");
+      if (i === 1) row.classList.add("top1");
+      if (i === 2) row.classList.add("top2");
+      if (i === 3) row.classList.add("top3");
 
-        const title = document.createElement("h3");
-        title.innerText = "#" + i;
+      const rank = document.createElement("div");
+      rank.className = "rank";
+      rank.innerText = i;
 
-        const img = document.createElement("img");
-        img.width = 100;
+      const img = document.createElement("img");
+      img.className = "avatar";
 
-        if (name !== "Empty") {
-          img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/armor-bust/500";
-        }
-
-        const text = document.createElement("p");
-        text.innerText = name;
-
-        card.appendChild(title);
-        card.appendChild(img);
-        card.appendChild(text);
-
-        container.appendChild(card);
+      if (name !== "Empty") {
+        img.src = "https://skinmc.net/api/v1/renders/profiles/" + name + "/face/100";
       }
-    });
-  </script>
+
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "name";
+      nameDiv.innerText = name;
+
+      const pointsDiv = document.createElement("div");
+      pointsDiv.className = "points";
+      pointsDiv.innerText = points;
+
+      row.appendChild(rank);
+      row.appendChild(img);
+      row.appendChild(nameDiv);
+      row.appendChild(pointsDiv);
+
+      board.appendChild(row);
+    }
+  });
+</script>
 
 </body>
 </html>
